@@ -181,9 +181,9 @@ app.post("/upload", (req, res) => {
                 
                 x = req.files[0].path.split("/")[8]
                 // ใส่ชื่อ user ของตัวเองใน path ที่เว้นว่างด้วย ***
-                folder_model = '/Users/***/Desktop/react-learning/Server/output'
-                save = '/Users/***/Desktop/react-learning/Server/public/' + tran + "/" + "hide." + x.split(".")[1]
-                save1 = '/Users/***/Desktop/react-learning/Server/public/' + tran + "/" + "reveal." + x.split(".")[1]
+                folder_model = '/Users/***/Desktop/NSC2021_SCAMA/Server/output'
+                save = '/Users/***/Desktop/NSC2021_SCAMA/Server/public/' + tran + "/" + "hide." + x.split(".")[1]
+                save1 = '/Users/***/Desktop/NSC2021_SCAMA/Server/public/' + tran + "/" + "reveal." + x.split(".")[1]
                 filepath(folder_model, req.files[0].path, req.files[1].path, save);
             } else {
                 res.status(400).send({
@@ -264,8 +264,8 @@ app.post("/reveal", (req, res) => {
                 }
                 x = req.files[0].path.split("/")[8]
                 // ใส่ชื่อ user ของตัวเองใน path ที่เว้นว่างด้วย ***
-                folder_model = '/Users/***/Desktop/react-learning/Server/output'
-                save = '/Users/***/Desktop/react-learning/Server/public/' + tran + "/" + "reveal." + x.split(".")[1]
+                folder_model = '/Users/***/Desktop/NSC2021_SCAMA/Server/output'
+                save = '/Users/***/Desktop/NSC2021_SCAMA/Server/public/' + tran + "/" + "reveal." + x.split(".")[1]
 
                 FileReveal(folder_model, req.files[0].path, save);
 
