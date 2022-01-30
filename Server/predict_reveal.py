@@ -1,5 +1,4 @@
 from __future__ import print_function
-
 import numpy as np
 import os
 from skimage import io 
@@ -16,14 +15,9 @@ import torchvision.utils as vutils
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
 
-
 # Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(f'Use device: {device}')
-
-#to get the current working directory
-directory = os.getcwd()
-# print("current working dir: " + directory)
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
@@ -76,11 +70,11 @@ revl_net.apply(weights_init)
 ##Predict
 #input model path
 path = sys.argv[1:]
-# print(path)
+print(path)
 
 ListOfModels = glob.glob(os.path.join(path[0], "*.pt"))
 # for file in ListOfModels:
-#     print(file)
+#    print(file)
 # print('models founded')
 
 revl_net.load_state_dict(torch.load(os.path.join(path[0],'modelsrevl.pt'), map_location=device))
@@ -99,28 +93,21 @@ def image_loader(image_name):
     image = image.unsqueeze(0) # Add batch dimension
     return image
 
-def imshow(img):
-    img = img / 2 + 0.5     # unnormalize
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
-    plt.xticks([])
-    plt.yticks([])
-    plt.show()
+cont = path[1]
+# print("your image path is: " + cont)
 
-contimg_path = path[1]
-# print("your image path is: " + contimg_path)
+contimg = image_loader(cont)
+# print(contimg)
 
-contimg = image_loader(contimg_path)
-# print(contimg.shape)
-
-    
 with torch.no_grad():
     # Set dropout and batch normalization layers to evaluation mode
     revl_net.eval()
 
     # Reveal
-    rec_hidden_img = revl_net(contimg)
+    rec_hidden_img = revl_net(contimg.to(device))
 
+container_img = contimg / 2 + 0.5
+reveal_img = rec_hidden_img / 2 + 0.5
 secret_path = path[2]
 save_image(rec_hidden_img, secret_path)
 print(secret_path)
