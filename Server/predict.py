@@ -21,7 +21,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(f'Use device: {device}')
     
 # MODELS PATH
-MODELS_PATH = '/User/***/NSC2021_SCAMA/Server/output/models'
+MODELS_PATH = '/Users/***/NSC2021_SCAMA/Server/output/models'
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
