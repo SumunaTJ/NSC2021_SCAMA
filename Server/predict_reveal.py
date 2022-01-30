@@ -70,7 +70,7 @@ revl_net.apply(weights_init)
 ##Predict
 #input model path
 path = sys.argv[1:]
-print(path)
+# print(path)
 
 ListOfModels = glob.glob(os.path.join(path[0], "*.pt"))
 # for file in ListOfModels:
