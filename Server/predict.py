@@ -1,4 +1,5 @@
 from __future__ import print_function
+#%matplotlib inline
 import sys
 import glob
 import numpy as np
@@ -17,10 +18,10 @@ from torch.autograd import Variable
 
 # Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-print(f'Use device: {device}')
-
+# print(f'Use device: {device}')
+    
 # MODELS PATH
-# MODELS_PATH = '/home/hideimg/workspace/DeepSteg-master/output/models'
+MODELS_PATH = '/User/***/NSC2021_SCAMA/Server/output/models'
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
@@ -117,18 +118,17 @@ hide_net.apply(weights_init)
 path = sys.argv[1:]
 # print(path)
 
-# ListOfModels = glob.glob(os.path.join(path[0], "*.pt"))
+ListOfModels = glob.glob(os.path.join(path[0], "*.pt"))
 # for file in ListOfModels:
-#     print(file)
+#    print(file)
 # print('models founded')
 
 prep_net.load_state_dict(torch.load(os.path.join(path[0],'modelsprep.pt'), map_location=device))
 hide_net.load_state_dict(torch.load(os.path.join(path[0],'modelshide.pt'), map_location=device))
 
-
 loader = transforms.Compose([
     transforms.Resize((256, 256)),
-    transforms.CenterCrop(image_size),
+#     transforms.CenterCrop(image_size),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
@@ -141,6 +141,8 @@ def image_loader(image_name):
     image = image.unsqueeze(0) # Add batch dimension
     return image
     
+# hoimg = image_loader('/home/hideimg/workspace/DeepSteg-master/test/poster_downloads/1.9_96870.jpg')
+# hiimg = image_loader('/home/hideimg/workspace/DeepSteg-master/test/1002-v1.png')
 #input path of host & hid img
 hover = path[1]
 # print("hover image path is: " + hover)
@@ -150,7 +152,7 @@ hiding = path[2]
 hoimg = image_loader(hover)
 hiimg = image_loader(hiding)
 
-# print(hoimg, hiimg)
+# print(hoimg.shape, hiimg.shape)
 
 with torch.no_grad():
     # Set dropout and batch normalization layers to evaluation mode
@@ -165,9 +167,11 @@ with torch.no_grad():
     container_img = hide_net(concat_img)
 
 cont_img = container_img / 2 + 0.5
+
 save_path = path[3]
 save_image(cont_img, save_path)
+np.save('/home/hideimg/workspace/DeepSteg-master/test/test1.npy', container_img.cpu().numpy())
+# print(container_img, np.max(container_img.cpu().numpy()), np.min(container_img.cpu().numpy()))
 print(save_path)
-# print("save image at: " + save_path)
 
 sys.stdout.flush()
